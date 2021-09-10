@@ -1,6 +1,8 @@
 package com.hightest.testcases;
 
+import com.hightest.pages.DashboardPage;
 import com.hightest.pages.LoginPage;
+import com.hightest.pages.TestPage;
 import com.hightest.utils.GetPropertiesVelues;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -13,7 +15,9 @@ import java.util.concurrent.TimeUnit;
 public class TestCase {
 
     WebDriver driver;
-    LoginPage objLogin;
+    LoginPage objLoginPage;
+    TestPage objTestPage;
+    DashboardPage objDashboardPage;
     GetPropertiesVelues propertiesVelues;
     /**
      * In this method we load the chrome driver,
@@ -26,11 +30,15 @@ public class TestCase {
     public void setUp(){
         System.setProperty("webdriver.chrome.driver","src/main/resources/chromedriver.exe");
         driver = new ChromeDriver();
+        driver.manage().deleteAllCookies();
         driver.get("https://recette.testeum.com/login");
         driver.manage().deleteAllCookies();
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         propertiesVelues = new GetPropertiesVelues("config.properties");
+        objTestPage = new TestPage(this.driver);
+        objLoginPage = new LoginPage(this.driver);
+        objDashboardPage = new DashboardPage(this.driver);
     }
 
     /**
@@ -45,27 +53,30 @@ public class TestCase {
      *      -Expected Value : "hi 'username,'"
      * @throws Exception
      */
-    @Test
+    @Test(priority = 0)
     public void test_Login_Page() throws Exception{
+
         //Get user/password values
         String password = propertiesVelues.getPropertyValue("passWord");
         String userName = propertiesVelues.getPropertyValue("userName");
-/**
- * Action 1 : Login
- */
-        objLogin = new LoginPage(this.driver);
-        objLogin.waitLoginPage();
-        objLogin.setUserName(userName);
-        objLogin.setPassWord(password);
-        objLogin.clickLogin();
-        String result = objLogin.getTitleAfterLogin();
+        objLoginPage.waitLoginPage();
+        objLoginPage.setUserName(userName);
+        objLoginPage.setPassWord(password);
+        objLoginPage.clickLogin();
+        String result = objLoginPage.getTitleAfterLogin();
         String expected = "hi "+userName+",";
         Assert.assertEquals(result.toLowerCase(),expected.toLowerCase());
-
-
     }
 
+    @Test (priority = 1)
+    public void test_Execution_test() throws Exception{
+        objDashboardPage.goTestPage();
+        String nbTT = objTestPage.getNbTT();
+        objTestPage.selectFirstTest();
+        objTestPage.executeTest();
+        System.out.println("NBTT : "+nbTT);
 
+    }
 
     @AfterTest
     public void tearDown(){

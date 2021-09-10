@@ -14,6 +14,8 @@ public class GetPropertiesVelues {
     public GetPropertiesVelues(String pathFile){
         this.pathFile=pathFile;
     }
+
+
     public String getPropertyValue(String key) throws IOException {
 
         try{
