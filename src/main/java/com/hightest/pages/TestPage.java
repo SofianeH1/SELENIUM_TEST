@@ -71,10 +71,11 @@ public class TestPage {
         this.driver.findElement(elmContinue).click();
         Thread.sleep(500);
         By elmNoBug = By.xpath("//span[contains(.,'No bug found')]");
-        List<WebElement> nbSteps;
+        List<WebElement> nbSteps; //get all steps
         try{
              nbSteps = this.driver.findElements(elmNoBug);
         }catch (Exception e){
+                //if not english Used
                 elmNoBug = By.xpath("//span[contains(.,'Aucun bug trouvé')]");
                 nbSteps = this.driver.findElements(elmNoBug);
         }

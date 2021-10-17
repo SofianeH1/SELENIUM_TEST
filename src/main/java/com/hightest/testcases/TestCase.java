@@ -23,6 +23,7 @@ public class TestCase {
     String nbTT;
     String nbTTExpected;
     /**
+     * SetUp Method
      * In this method we load the chrome driver,
      * set an implicit time out of 60s,
      * delete all cookies

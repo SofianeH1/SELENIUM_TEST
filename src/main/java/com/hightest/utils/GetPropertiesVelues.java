@@ -5,6 +5,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Read config.properties and get data :
+ *  -User name
+ *  -password
+ *  we can add others information like language ...
+ */
 public class GetPropertiesVelues {
 
     String pathFile;

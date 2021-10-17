@@ -8,6 +8,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Contains help Methods
+ */
 public final class TestUtilities {
 
     public static void waitElement(WebDriver driver, By element){

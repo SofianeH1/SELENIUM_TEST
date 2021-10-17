@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  * PassWord
  * Login btn
  * Title of dashboard (if login ok)
+ * Click Login ...
  */
 public class LoginPage {
 
