@@ -5,7 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-
 import java.util.List;
 
 /**
@@ -16,13 +15,13 @@ public class TestPage {
     WebDriver driver;
 
     //select the element which precedes the image that contains alt=TT
-    By elmNbTT = By.xpath("//img[@alt='TT']/preceding::div[1]");
+    By elmNbTT = By.xpath("(//img[@alt='TT'])[1]/preceding::div[1]");
 
     //select execution buttons
     By elmRunTestBtns = By.id("link-test-details");
 
     //Select device
-    By elmSelectDevice = By.id("button-test-selectenv-device-49205");
+    By elmSelectDevice = By.xpath("//*[local-name()='svg' and @data-icon='desktop']/*[local-name()='path']/parent::*");
 
     //select browser
     By elmSelectBrowser = By.id("button-test-selectenv-browser-1");
@@ -41,6 +40,9 @@ public class TestPage {
 
     //element go Dashborard
     By elemGoDashboard = By.id("link-go-to-dashboard");
+
+    //element go Dashborard
+    By elmpPrerequisite = By.id("button-test-step0-nobug");
 
     public TestPage(WebDriver driver){
         this.driver = driver;
@@ -67,10 +69,26 @@ public class TestPage {
         this.driver.findElement(elmSelectDevice).click();
         this.driver.findElement(elmSelectBrowser).click();
         this.driver.findElement(elmContinue).click();
+        Thread.sleep(500);
         By elmNoBug = By.xpath("//span[contains(.,'No bug found')]");
-        List<WebElement> nbStps = this.driver.findElements(elmNoBug);
+        List<WebElement> nbSteps;
+        try{
+             nbSteps = this.driver.findElements(elmNoBug);
+        }catch (Exception e){
+                elmNoBug = By.xpath("//span[contains(.,'Aucun bug trouvé')]");
+                nbSteps = this.driver.findElements(elmNoBug);
+        }
+
+        //for French version
+
+
+        //check if there is prerequisite
+        if(this.driver.findElements(elmpPrerequisite).size()>0)
+            this.driver.findElement(elmpPrerequisite).click();
+
         int i = 1;
-        for (WebElement webElm : nbStps){
+        for (WebElement webElm : nbSteps){
+            Thread.sleep(500);
             this.driver.findElement(By.id("button-test-step"+i+"-nobug")).click();
             i++;
             Thread.sleep(500);

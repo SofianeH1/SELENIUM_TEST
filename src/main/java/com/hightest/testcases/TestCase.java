@@ -6,6 +6,7 @@ import com.hightest.pages.TestPage;
 import com.hightest.utils.GetPropertiesVelues;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -19,17 +20,22 @@ public class TestCase {
     TestPage objTestPage;
     DashboardPage objDashboardPage;
     GetPropertiesVelues propertiesVelues;
+    String nbTT;
+    String nbTTExpected;
     /**
      * In this method we load the chrome driver,
      * set an implicit time out of 60s,
      * delete all cookies
      * maximize window
-     * instantiate GetPropertiesVelues with adequate file that contains our data
+     * instantiate GetPropertiesVelues with adequate file that contains login data
+     * instantiate Pages
      */
     @BeforeTest
     public void setUp(){
         System.setProperty("webdriver.chrome.driver","src/main/resources/chromedriver.exe");
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--lang=en");
+        driver = new ChromeDriver(options);
         driver.manage().deleteAllCookies();
         driver.get("https://recette.testeum.com/login");
         driver.manage().deleteAllCookies();
@@ -68,14 +74,28 @@ public class TestCase {
         Assert.assertEquals(result.toLowerCase(),expected.toLowerCase());
     }
 
+    /**
+     * Go to dashboard page and store TT in a global variable before execute test,
+     * and next execute first test
+     * @throws Exception
+     */
     @Test (priority = 1)
     public void test_Execution_test() throws Exception{
         objDashboardPage.goTestPage();
-        String nbTT = objTestPage.getNbTT();
+        nbTT = objTestPage.getNbTT();
         objTestPage.selectFirstTest();
         objTestPage.executeTest();
         System.out.println("NBTT : "+nbTT);
 
+    }
+
+    /**
+     * Ensure that the number of TTs before execution is equal to that obtained
+     */
+    @Test(priority = 3)
+    public void verifyNbTT(){
+        nbTTExpected = objDashboardPage.getNbTT();
+        Assert.assertEquals(nbTT,nbTTExpected);
     }
 
     @AfterTest
