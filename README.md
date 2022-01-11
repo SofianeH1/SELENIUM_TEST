@@ -1,2 +1,1 @@
-# SELENIUM_TEST
-Test Read ME
+Scénario : se rendre sur https://recette.testeum.com/, se connecter avec l'utilisateur t1 / test, se rendre sur l'onglet "Tester", récupérer le nombre de TT prévus par le premier test disponible, cliquer sur le premier test disponible, exécuter le test sans remonter de bug ; à la fin du test, se rendre sur le tableau de bord et vérifier que le montant en TT prévu est bien affiché en première ligne du tableau des dernières récompenses.
